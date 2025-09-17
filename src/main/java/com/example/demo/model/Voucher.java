@@ -1,35 +1,42 @@
 package com.example.demo.model;
 
-import com.example.demo.model.VoucherType;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
-import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
-
 @Data
-public class Voucher {
-  private Long id;
+public class Voucher2 {
+    @NotBlank(message="Código é requerido")
+    @Pattern(regexp="^[A-Z0-9][4,10]$",message = "Código precisa ter entre 4 e 10 letras maiúsculas")
 
-  @NotBlank(message = "Voucher code is required")
-  private String code;
+    private String code;
+    
+    @NotNull(message = "Tipo é requerido")
+    private String type;
 
-  @NotNull(message = "Discount percentage is required")
-  @PositiveOrZero(message = "Discount percentage must be zero or positive")
-  private BigDecimal discountPercent;
+    @NotNull(message = "Valor é requerido")
+    @Positive(message = "Precisa ser positivo")
+    private BigDecimal value;
 
-  @NotNull(message = "Expiration date is required")
-  @FutureOrPresent(message = "Expiration date must be today or in the future")
-  private LocalDate expirationDate;
+    @NotNull(message = "Valor é requerido")
+    @Min(value = 0, message = "Não pode ser negativo")
+    private BigDecimal minimumPurchase;
+     
+    @NotNull(message = "Valor requerido")
+    @Future(message = "Expiração precisa  ser fatura")
+    private LocalDateTime expirationDate;
 
-  @NotNull(message = "Voucher type is required")
-  private VoucherType type;
+    @NotNull(message = "Limite é requerido")
+    @Min(value = 0, message = "Precisa ser ao menos 1")
+    private Integer usageLimit;
 
-  @PositiveOrZero(message = "Minimum order value must be zero or positive")
-  private BigDecimal minimumOrderValue;
+    private Integer usageCount = 0;
+
 }
